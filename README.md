@@ -2,105 +2,104 @@
 
 ## Overview
 
-This project focuses on predicting the 5-year survival outcome for colorectal cancer patients using machine learning models trained on comprehensive data from the Surveillance, Epidemiology, and End Results (SEER) Program. Colorectal cancer is a leading cause of cancer-related deaths, and accurate long-term survival prediction is crucial for personalized patient care, effective resource allocation, and public health initiatives. This project aims to provide clinicians with predictive tools to assess long-term survival at diagnosis, thereby supporting informed decision-making.
+This project focuses on predicting the 5-year survival outcome of colorectal cancer patients using machine learning models trained on comprehensive data from the Surveillance, Epidemiology, and End Results (SEER) Program. Colorectal cancer is a leading cause of cancer-related deaths, and accurate long-term survival prediction is crucial for personalized patient care, effective resource allocation, and public health initiatives. This project aims to provide clinicians with predictive tools to assess long-term survival at diagnosis, thereby supporting informed decision-making.
 
 ## Project Goal
 
-The primary goal of this project is to predict the 5-year survival outcome of patients diagnosed with colorectal cancer using historical clinical and demographic data from the SEER program.
+The primary objective of this project is to predict the 5-year survival outcome of patients diagnosed with colorectal cancer using historical clinical and demographic data from the SEER program.
 
 ## Specific Objectives
 
-* **Build Predictive Models:** Develop and implement machine learning models to classify whether a patient will survive 5 years post-diagnosis.
-* **Data Preprocessing:** Clean and preprocess the SEER colorectal cancer dataset to address real-world challenges such as missing values, data leakage, and multicollinearity.
-* **Identify Key Survival Factors:** Determine the most influential features affecting long-term survival, including tumor grade, size, and patient demographics.
-* **Evaluate Model Performance:** Assess model effectiveness using appropriate metrics like accuracy, ROC-AUC, precision, and recall.
-* **Translate Findings into Insights:** Provide actionable insights to support clinical decisions (e.g., monitoring high-risk patients), public health policy (e.g., resource allocation), and future research.
+- Build predictive models to classify whether a patient will survive five years post-diagnosis.
+- Clean and preprocess the SEER dataset to address missing values, data leakage, and multicollinearity.
+- Identify the most influential features affecting long-term survival, such as tumor characteristics and patient demographics.
+- Evaluate model performance using appropriate metrics including accuracy, precision, recall, F1 score, and ROC AUC.
+- Translate predictive results into practical insights that can support clinical decision-making and public health strategies.
 
 ## Data Source
 
-The dataset used for this project is from the **Surveillance, Epidemiology, and End Results (SEER) Program** of the National Cancer Institute (NCI). 
+The dataset used in this project is obtained from the Surveillance, Epidemiology, and End Results (SEER) Program of the National Cancer Institute (NCI).
 
-* **Total Cases:** Over 800,000 records. 
-* **Focus:** Colorectal cancer patient records. 
-* **Timeframe:** Includes patients diagnosed between 1975–2020. 
-* **Features:** Demographics (age, sex, race), tumor details (site, grade, histology), treatment, and outcomes. 
-* **Target Variable:** A binary variable (`target`) indicating 5-year survival. 
-    * `1` = Survived $\ge$ 60 months (5 years) 
-    * `0` = Died within 60 months (5 years) 
+- Total Records: Over 800,000 cases
+- Focus: Colorectal cancer patients
+- Timeframe: Diagnoses from 1975 to 2020
+- Features: Demographics, tumor details, treatment history, and survival outcomes
+- Target Variable: A binary indicator for 5-year survival
+    - 1 = Survived at least 60 months
+    - 0 = Died within 60 months
 
-## End-to-End Model Development Process
+## Methodology
 
-The project followed a structured end-to-end model development process:
+1. Data Acquisition  
+   Initial retrieval and exploration of colorectal cancer records from SEER.
 
-1.  **Colorectal Cancer Data:** Initial data acquisition from the SEER program.
-2.  **Feature Extraction:**
-    * Feature Selection & Multicollinearity reduction (VIF, correlation, statistical tests) 
-    * Encoding Categorical Features 
-3.  **Machine Learning Model:**
-    * Training various classification models: Logistic Regression, LightGBM, Random Forest, and CatBoost. 
-    * Model Evaluation using Accuracy and ROC AUC. 
+2. Feature Engineering  
+   Selection of relevant features using statistical tests and domain knowledge. Reduction of multicollinearity using Variance Inflation Factor (VIF). Categorical features encoded using One-Hot Encoding.
 
-## Data Cleaning & Preprocessing Steps
+3. Data Preprocessing  
+   - Removed columns with 100 percent missing values.
+   - Imputed columns with partial missingness (median/mode or indicators based on threshold).
+   - Dropped variables with excessive missing data or those that introduced data leakage.
+   - Finalized a reduced feature set of approximately 40 columns.
 
-The following steps were performed to clean and preprocess the raw SEER data:
+4. Model Development  
+   Multiple machine learning models were trained and evaluated, including:
+   - Logistic Regression
+   - Random Forest
+   - LightGBM
+   - CatBoost
 
-* **Removed Columns with 100% Missing Values:** Initial dataset had 149 columns; reduced after dropping fully null columns. 
-* **Handled Partial Missing Values:** * `< 25% missing`: Imputed using median or mode (e.g., `YR_BRTH`, `IHS`). 
-    * `25%–65% missing`: Imputed + added missing indicators (e.g., `CS_SIZE`, `D_AJCC_T`). 
-    * `> 65% missing`: Columns were dropped due to excessive nulls or low predictive power. 
-* **Dropped Data-Leaking Variables:** Variables containing post-outcome information (e.g., `SRV_TIME_MON`, `DTH_CLASS`) were removed to prevent unfair model performance. 
-* **Multicollinearity Reduction:** Used Variance Inflation Factor (VIF) to drop highly collinear features (VIF > 10 threshold). 
-* **Feature Selection:** Selected features based on chi-square, ANOVA, correlation with target, and domain understanding. The final feature count was reduced from an initial ~110 features to about 40 informative variables. 
-* **Categorical Variable Encoding:** Applied One-Hot Encoding to nominal categorical features. 
+## Key Features Identified
 
-## Feature Importance
+Important predictors of 5-year survival included:
 
-Key features identified as influential for 5-year survival prediction include:
+- HST_STGA: Cancer stage at diagnosis
+- DATE_yr: Year of diagnosis
+- AGE_REC: Age of patient
+- CS_SSF1: Tumor-specific biological factors
+- NUMPRIMS: Number of primary tumors
+- NO_SURG: Surgery status
+- EOD10_PN: Lymph node involvement
+- MAR_STAT: Marital status
+- ICDOT10V: Tumor site
 
-* `HST_STGA`: Cancer stage – strongest survival predictor 
-* `DATE_yr`: Year of diagnosis – reflects treatment era 
-* `AGE_REC`: Age at diagnosis – older age typically correlates with lower survival 
-* `CS_SSF1`: Site-specific factor – biomarker/tumor information 
-* `NUMPRIMS`: Number of primary tumors – indicates disease burden 
-* `NO_SURG`: Surgery indicator – critical for treatment status 
-* `EOD10_PN`: Lymph node involvement – key staging factor 
-* `MAR_STAT`: Marital status – social support can influence outcomes 
-* `ICDOT10V`: Tumor site – affects treatment and prognosis 
+## Model Evaluation
 
-## Model Performance
+| Metric           | Logistic Regression | Random Forest | LightGBM | CatBoost |
+|------------------|----------------------|----------------|-----------|-----------|
+| Accuracy         | 0.6865               | 0.7764         | 0.8024    | 0.8032    |
+| Precision        | 0.6287               | 0.6962         | 0.7223    | 0.7228    |
+| Recall           | 0.4387               | 0.7360         | 0.7848    | 0.7866    |
+| F1 Score         | 0.5168               | 0.7156         | 0.7523    | 0.7534    |
+| ROC AUC Score    | 0.7269               | 0.8611         | 0.8904    | 0.8910    |
 
-Several machine learning models were evaluated for their ability to predict 5-year survival. The key metrics used were Accuracy, Precision, Recall, F1 Score, and AUC Score.
+## Conclusion
 
-| Metric            | Logistic Regression | Random Forest | LightGBM | CatBoost |
-| :---------------- | :------------------ | :------------ | :------- | :------- |
-| **Accuracy** | 0.6865              | 0.7764        | 0.8024   | **0.8032** |
-| **Precision** | 0.6287              | 0.6962        | 0.7223   | **0.7228** |
-| **Recall** | 0.4387              | 0.7360        | 0.7848   | **0.7866** |
-| **F1 Score** | 0.5168              | 0.7156        | 0.7523   | **0.7534** |
-| **AUC Score** | 0.7269              | 0.8611        | 0.8904   | **0.8910** |
+The CatBoost model achieved the best performance across all metrics, indicating strong predictive capability for classifying colorectal cancer patients by their 5-year survival likelihood. LightGBM also performed competitively and could be considered for applications where faster training is desired.
 
-## Model Summary & Recommendations
+Logistic Regression was the least effective model, highlighting the need for more complex techniques in this context. Random Forest served as a robust baseline model with solid performance but was slightly outperformed by boosting models.
 
-* **CatBoost** emerged as the best-performing model, achieving the highest accuracy, precision, recall, F1 score, and AUC. This makes it the most balanced and robust classifier for predicting survivor outcomes in this dataset.
-* **LightGBM** performed very similarly to CatBoost and is a strong alternative, especially when computational speed and resource efficiency are priorities. 
-* **Random Forest** showed good overall performance, outperforming Logistic Regression but slightly lagging behind the boosting models in recall and AUC. 
-* **Logistic Regression**, while interpretable, had the lowest performance, particularly in recall, indicating it struggled to capture the complexity of the data. 
+## Recommendations
 
-**Recommendations:**
+1. Integration of this predictive model into SEER dashboards can assist clinicians and researchers in assessing individual patient outcomes and optimizing treatment strategies.
 
-1.  **Integrate Survival Prediction Tools into SEER Dashboards:** The developed machine learning model (preferably CatBoost) could be incorporated into SEER dashboards. This would empower clinicians and researchers with an estimated 5-year survival chance for patients based on their medical details, aiding in treatment planning and informed decision-making. 
-2.  **Identify High-Risk Patients for Enhanced Care:** The model can effectively flag patients with a lower probability of 5-year survival. This allows for closer follow-up, earlier intervention, or specialized care, particularly beneficial in underserved communities. 
+2. Healthcare providers and policymakers can use the model’s output to proactively monitor and allocate resources for patients with lower predicted survival probabilities.
 
 ## Project Team
 
-* Ayush Shrivastava
-* Ashutosh Masulkar
-* Rahul Swami
-* Rishikesh Mankar
-* Shantanu Dahiphale
+- Ayush Shrivastava  
+- Ashutosh Masulkar  
+- Rahul Swami  
+- Rishikesh Mankar  
+- Shantanu Dahiphale
 
-**Mentor:** Prof. Hamed Zolbanin 
+Mentor: Professor Hamed Zolbanin  
+University of Dayton – MBAN 710 Capstone Project  
+May 2025
 
-University of Dayton, MBAN 710 Capstone Project 
-May 2025 
+## Contact
 
+Shantanu Dahiphale  
+Email: cdahiphale@gmail.com  
+LinkedIn: https://www.linkedin.com/in/shantanu-dahiphale  
+GitHub: https://github.com/wckd111/ColorectalCancerSurvivalPrediction-Shantanu
