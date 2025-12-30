@@ -61,6 +61,10 @@ To recreate the environment used for this project:
   - `source .venv/bin/activate`
   - `pip install -r requirements.txt`
 
+## Dataset
+
+The SEER dataset file (`colrect.csv`) is not stored in this repository because it exceeds GitHub's file size limits. After obtaining the dataset from SEER, place it at the project root with the filename `colrect.csv`.
+
 ## Key Features Identified
 
 Important predictors of 5-year survival included:
