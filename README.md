@@ -49,6 +49,18 @@ The dataset used in this project is obtained from the Surveillance, Epidemiology
    - LightGBM
    - CatBoost
 
+## Reproducibility
+
+To recreate the environment used for this project:
+
+- Conda (full environment):
+  - `conda env create -f environment.yml`
+  - `conda activate base`
+- Pip (minimal dependencies):
+  - `python -m venv .venv`
+  - `source .venv/bin/activate`
+  - `pip install -r requirements.txt`
+
 ## Key Features Identified
 
 Important predictors of 5-year survival included:
