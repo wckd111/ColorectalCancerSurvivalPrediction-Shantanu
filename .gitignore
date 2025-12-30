@@ -23,3 +23,5 @@ conda-bld/
 # ML artifacts
 catboost_info/
 
+# Large datasets
+colrect.csv
